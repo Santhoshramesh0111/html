@@ -1,12 +1,677 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My First Webpage</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Santhosh Ramesh • Photography</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#0b0f1a;
+      --bg2:#0c1b2a;
+      --card: rgba(255,255,255,0.10);
+      --stroke: rgba(255,255,255,0.18);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+
+      --pink:#ff4ecd;
+      --violet:#7c4dff;
+      --cyan:#36d1ff;
+      --mint:#2ee59d;
+      --yellow:#ffd166;
+
+      --shadow: 0 18px 60px rgba(0,0,0,0.45);
+      --radius: 22px;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(800px 500px at 12% 12%, rgba(255, 78, 205, 0.22), transparent 60%),
+        radial-gradient(700px 550px at 92% 18%, rgba(54, 209, 255, 0.20), transparent 55%),
+        radial-gradient(750px 600px at 20% 92%, rgba(46, 229, 157, 0.18), transparent 58%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* Floating gradient blobs */
+    .blob{
+      position: fixed;
+      inset: auto;
+      width: 360px;
+      height: 360px;
+      background: conic-gradient(from 180deg, var(--pink), var(--yellow), var(--mint), var(--cyan), var(--violet), var(--pink));
+      filter: blur(18px);
+      opacity: 0.32;
+      border-radius: 50%;
+      z-index: -1;
+      animation: float 8s ease-in-out infinite;
+    }
+    .b1{ top:-90px; left:-110px; }
+    .b2{ bottom:-120px; right:-140px; width: 460px; height:460px; animation-delay:1.5s; }
+    .b3{ top:120px; right:80px; width: 220px; height:220px; animation-delay:2.7s; opacity:0.25; }
+    @keyframes float{
+      0%,100%{ transform: translate(0,0) scale(1); }
+      50%{ transform: translate(24px,-22px) scale(1.06); }
+    }
+
+    /* Layout */
+    .container{
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 26px 0 70px;
+    }
+
+    /* Top Nav */
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 16px 18px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 14px;
+      z-index: 10;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 220px;
+    }
+
+    .logo{
+      width: 40px; height: 40px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      font-size: 18px;
+    }
+
+    .brand h3{
+      font-size: 14px;
+      line-height: 1.1;
+      letter-spacing: 0.2px;
+    }
+    .brand small{
+      display:block;
+      margin-top:2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .links{
+      display:flex;
+      gap: 8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .links a{
+      text-decoration:none;
+      color: rgba(255,255,255,0.86);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+    .links a:hover{
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.18);
+      transform: translateY(-1px);
+    }
+
+    /* Hero */
+    .hero{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+    @media (max-width: 880px){
+      .hero{ grid-template-columns: 1fr; }
+      .brand{ min-width: unset; }
+    }
+
+    .glass{
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position: relative;
+    }
+
+    .hero-left{
+      padding: 28px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      width: fit-content;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.85);
+      font-size: 13px;
+      letter-spacing: 0.2px;
+    }
+
+    .spark{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--mint);
+      box-shadow: 0 0 22px rgba(46,229,157,0.8);
+      flex: 0 0 auto;
+    }
+
+    h1{
+      font-family:"Playfair Display", serif;
+      font-weight: 800;
+      font-size: clamp(34px, 4.2vw, 56px);
+      line-height: 1.03;
+      margin: 16px 0 10px;
+      text-shadow: 0 14px 35px rgba(0,0,0,0.40);
+    }
+
+    .accent{
+      background: linear-gradient(90deg, var(--yellow), var(--pink), var(--cyan));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+
+    .sub{
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 15.5px;
+      max-width: 62ch;
+    }
+
+    .cta{
+      margin-top: 18px;
+      display:flex;
+      gap: 12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .btn{
+      border: none;
+      cursor:pointer;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+      user-select:none;
+    }
+    .btn-primary{
+      color:#0b0f1a;
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+      box-shadow: 0 18px 40px rgba(255,78,205,0.22);
+    }
+    .btn-primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 22px 55px rgba(255,78,205,0.30);
+    }
+    .btn-ghost{
+      color: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .btn-ghost:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .stats{
+      margin-top: 18px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .stat{
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.16);
+      min-width: 150px;
+    }
+    .stat b{
+      display:block;
+      font-size: 18px;
+      letter-spacing:0.2px;
+    }
+    .stat span{
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    /* Hero Right - Featured Image card */
+    .hero-right{
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .featured{
+      flex: 1;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.16);
+      overflow:hidden;
+      position: relative;
+      background:
+        linear-gradient(120deg, rgba(255,78,205,0.22), rgba(54,209,255,0.10)),
+        url("https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&w=1200&q=70") center/cover no-repeat;
+      min-height: 260px;
+    }
+    .featured::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.55));
+    }
+    .featured .cap{
+      position:absolute;
+      left: 14px;
+      bottom: 14px;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      gap: 4px;
+    }
+    .featured .cap strong{ font-size: 14px; }
+    .featured .cap small{ color: rgba(255,255,255,0.75); }
+
+    .quick{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 480px){
+      .quick{ grid-template-columns: 1fr; }
+    }
+    .mini{
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .mini:hover{
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.12);
+    }
+    .mini .ic{
+      width: 40px; height: 40px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .mini h4{ font-size: 14px; margin-bottom: 4px; }
+    .mini p{ font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
+    /* Sections */
+    .section{
+      margin-top: 22px;
+      padding: 22px;
+    }
+    .section h2{
+      font-family:"Playfair Display", serif;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+    .section .hint{
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    /* Gallery */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .shot{
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.12);
+      position: relative;
+      min-height: 160px;
+      cursor:pointer;
+      transition: transform .2s ease;
+    }
+    .shot:hover{ transform: translateY(-3px); }
+    .shot img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter: saturate(1.1) contrast(1.05);
+      transform: scale(1.02);
+    }
+    .shot .label{
+      position:absolute;
+      left: 12px;
+      bottom: 12px;
+      z-index:2;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(10px);
+    }
+    .shot::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.35));
+      pointer-events:none;
+    }
+
+    /* Grid spans */
+    .c6{ grid-column: span 6; }
+    .c4{ grid-column: span 4; }
+    .c8{ grid-column: span 8; }
+    .c12{ grid-column: span 12; }
+    @media (max-width: 860px){
+      .c6,.c4,.c8{ grid-column: span 12; }
+    }
+
+    /* Contact */
+    form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media (max-width: 700px){
+      form{ grid-template-columns: 1fr; }
+    }
+    input, textarea{
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.18);
+      color: var(--text);
+      outline:none;
+      font-size: 14px;
+    }
+    textarea{ grid-column: 1 / -1; min-height: 110px; resize: vertical; }
+    input::placeholder, textarea::placeholder{ color: rgba(255,255,255,0.50); }
+
+    .footer{
+      text-align:center;
+      color: rgba(255,255,255,0.65);
+      margin-top: 18px;
+      font-size: 12.5px;
+    }
+
+    /* Small toast */
+    .toast{
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 10px 12px;
+      border-radius: 14px;
+      color: rgba(255,255,255,0.90);
+      font-size: 13px;
+      display:none;
+      backdrop-filter: blur(12px);
+      z-index: 20;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Hello, This is Santhosh</h1>
-    <p>I am currently working as an ICTS Intern at Birlasoft , gaining hands-on experience in cloud technologies through a bootcamp by Tech Academy. I have completed my B.Sc. in Information Technology. I am skilled in SQL, Python, and Power BI. During my academic journey, I developed projects such as a stock market simulation platform, event management system, and data analysis dashboards, which helped me turn ideas into working solutions. I consider myself a Maverick thinker who enjoys exploring new ideas and finding practical solutions.</p>
-<a href="secondpage.html">Go to Second Page</a>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <div class="container">
+
+    <!-- NAV -->
+    <header class="nav">
+      <div class="brand">
+        <div class="logo">📷</div>
+        <div>
+          <h3>Santhosh Ramesh</h3>
+          <small>Photography • Portraits • Street • Nature</small>
+        </div>
+      </div>
+
+      <nav class="links">
+        <a href="#work">Work</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="glass hero-left">
+        <div class="pill"><span class="spark"></span> Capturing moments, crafting stories</div>
+
+        <h1>
+          Hi, I’m <span class="accent">Santhosh Ramesh</span><br/>
+          a Creative Photographer
+        </h1>
+
+        <p class="sub">
+          I freeze real emotions into timeless frames—portraits, street scenes, and nature
+          shots with bold color grading and cinematic lighting.
+        </p>
+
+        <div class="cta">
+          <button class="btn btn-primary" onclick="scrollToId('contact')">📩 Book a Shoot</button>
+          <button class="btn btn-ghost" onclick="scrollToId('work')">🖼️ View Gallery</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <b>120+</b>
+            <span>Photos Delivered</span>
+          </div>
+          <div class="stat">
+            <b>15+</b>
+            <span>Happy Clients</span>
+          </div>
+          <div class="stat">
+            <b>5★</b>
+            <span>Creative Edits</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass hero-right">
+        <div class="featured">
+          <div class="cap">
+            <strong>Featured Series</strong>
+            <small>Cinematic Street Frames • Golden Hour</small>
+          </div>
+        </div>
+
+        <div class="quick">
+          <div class="mini">
+            <div class="ic">✨</div>
+            <h4>Color Grading</h4>
+            <p>Vibrant tones with cinematic contrast.</p>
+          </div>
+          <div class="mini">
+            <div class="ic">🎯</div>
+            <h4>Sharp Focus</h4>
+            <p>Detail-rich frames and clean composition.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK / GALLERY -->
+    <section id="work" class="glass section">
+      <h2>Gallery</h2>
+      <p class="hint">Replace the images with your own shots (I’ll tell you how below).</p>
+
+      <div class="grid">
+        <figure class="shot c8" onclick="openShot('Street Frames')">
+          <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=1600&q=70" alt="Street Frames">
+          <figcaption class="label">Street Frames</figcaption>
+        </figure>
+
+        <figure class="shot c4" onclick="openShot('Portrait Mood')">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=70" alt="Portrait">
+          <figcaption class="label">Portrait Mood</figcaption>
+        </figure>
+
+        <figure class="shot c4" onclick="openShot('Nature Light')">
+          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=70" alt="Nature">
+          <figcaption class="label">Nature Light</figcaption>
+        </figure>
+
+        <figure class="shot c4" onclick="openShot('Architecture')">
+          <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=900&q=70" alt="Architecture">
+          <figcaption class="label">Architecture</figcaption>
+        </figure>
+
+        <figure class="shot c4" onclick="openShot('Night Bokeh')">
+          <img src="https://images.unsplash.com/photo-1520975661595-6453be3f7070?auto=format&fit=crop&w=900&q=70" alt="Night">
+          <figcaption class="label">Night Bokeh</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="glass section">
+      <h2>Services</h2>
+      <p class="hint">Quick packages you can customize (pricing optional).</p>
+
+      <div class="grid">
+        <div class="mini c4">
+          <div class="ic">🧑‍🦱</div>
+          <h4>Portrait Session</h4>
+          <p>Indoor/outdoor portraits with pro edits and color grading.</p>
+        </div>
+
+        <div class="mini c4">
+          <div class="ic">💍</div>
+          <h4>Events & Weddings</h4>
+          <p>Candid + traditional coverage with highlight selection.</p>
+        </div>
+
+        <div class="mini c4">
+          <div class="ic">🏷️</div>
+          <h4>Product Shoots</h4>
+          <p>Clean, crisp product shots for brands and social media.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="glass section">
+      <h2>About Me</h2>
+      <p class="hint">
+        I’m <b>Santhosh Ramesh</b>, a photographer who loves real stories—captured with
+        bold colors, cinematic lighting, and minimal yet powerful composition.
+      </p>
+      <p class="hint">
+        My favorite genres: street photography, portraits, and nature. I also do creative
+        edits and album-ready exports.
+      </p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="glass section">
+      <h2>Contact</h2>
+      <p class="hint">Send a message. This demo shows a popup — you can connect it to email later.</p>
+
+      <form onsubmit="sendMsg(event)">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Your Email" required>
+        <textarea id="msg" placeholder="Tell me about your shoot (date, location, style)..." required></textarea>
+        <button class="btn btn-primary" type="submit">📨 Send Message</button>
+        <button class="btn btn-ghost" type="button" onclick="scrollToId('work')">🖼️ Back to Gallery</button>
+      </form>
+
+      <div class="footer">
+        © <span id="year"></span> Santhosh Ramesh • Built with ❤️ & creativity
+      </div>
+    </section>
+
+  </div>
+
+  <div class="toast" id="toast">Message sent! ✅ (Demo)</div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function scrollToId(id){
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function openShot(title){
+      showToast("Opening: " + title + " 📸");
+    }
+
+    function sendMsg(e){
+      e.preventDefault();
+      // Demo only:
+      const n = document.getElementById("name").value.trim();
+      showToast("Thanks " + n + "! I’ll reply soon ✨ (Demo)");
+      e.target.reset();
+    }
+
+    function showToast(text){
+      const t = document.getElementById("toast");
+      t.textContent = text;
+      t.style.display = "block";
+      t.style.opacity = "1";
+      setTimeout(() => {
+        t.style.opacity = "0";
+        setTimeout(()=> t.style.display="none", 300);
+      }, 1800);
+    }
+  </script>
 </body>
 </html>
+
